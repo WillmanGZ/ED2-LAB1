@@ -16,94 +16,85 @@ public class Arbol {
         Scanner sc = new Scanner(System.in);
         Nodo nivelActual = this.raiz;
 
-        while (jugando) { //Mientras que el jugador esté jugando
+        System.out.println("\n================= Bienvenido a la Aventura =================\n");
+
+        while (jugando) { // Mientras que el jugador este jugando
 
             if (nivelActual == null) {
-                System.out.println("Este juego no tiene niveles añadidos");
+                System.out.println("Este juego no tiene niveles añadidos.");
                 jugando = false;
             }
 
-            System.out.println(nivelActual.nombre);
-            System.out.println("");
+            System.out.println("+------------------------------------------+");
+            System.out.println("  Escenario: " + nivelActual.nombre);
+            System.out.println("+------------------------------------------+");
+            System.out.println("\nMateria:");
             System.out.println(nivelActual.descripcion);
-            System.out.println("");
-            System.out.println("El acertijo es: ");
-            System.out.println(nivelActual.acertijo);
-            System.out.println("");
-            System.out.print("Digite su respuesta: ");
+            System.out.println("\nEl acertijo es:");
+            System.out.println("* " + nivelActual.acertijo);
+            System.out.print("\nDigite su respuesta o escriba 'salir' para abandonar el juego: ");
             String respuesta = sc.next().toLowerCase();
 
             if (nivelActual == this.raiz) {
                 while (!respuesta.equals("si") && !respuesta.equals("salir")) {
-                    System.out.println("");
-                    System.out.println("Respuesta invalida, escribe 'si' para iniciar o 'salir' para salir del juego");
-                    respuesta = sc.next();
-                }
-
-                if (respuesta.equals("salir")) {
-                    System.out.println("");
-                    System.out.println("Esperamos verte pronto!");
-                    return;
+                    System.out.println("\nRespuesta invalida.");
+                    System.out.println("Escribe 'si' para iniciar o 'salir' para abandonar el juego.");
+                    System.out.print("Digite su respuesta: ");
+                    respuesta = sc.next().toLowerCase();
                 }
             }
+            if (respuesta.equals("salir")) {
+                System.out.println("\nHasta la proxima, esperamos verte pronto!");
+                return;
+            }
 
-            //Si la respuesta es correcta
-            if (respuesta.toLowerCase().equals(nivelActual.respuesta.toLowerCase())) {
-                if (nivelActual.izquierda != null || nivelActual.derecha != null) { //Si todavía contiene niveles
-                    System.out.println("");
-                    System.out.print("Has acertado, quieres pasar al proximo nivel? Escribe Si o No: ");
+            // Si la respuesta es correcta
+            if (respuesta.equals(nivelActual.respuesta.toLowerCase())) {
+                if (nivelActual.izquierda != null || nivelActual.derecha != null) { // Si todavia contiene niveles
+                    System.out.println("\nRespuesta correcta!");
+                    System.out.print("\nQuieres pasar al proximo nivel? (Si/No): ");
                     String seguir = sc.next().toLowerCase();
+
                     while (!seguir.equals("si") && !seguir.equals("no")) {
-                        System.out.println("");
-                        System.out.println("Respuesta invalida, escribe 'si' para continuar o 'no' para salir del juego");
+                        System.out.println("\nRespuesta invalida.");
+                        System.out.println("Escribe 'si' para continuar o 'no' para salir del juego.");
+                        System.out.print("Digite su respuesta: ");
                         seguir = sc.next().toLowerCase();
                     }
-                    if (seguir.equals("no")) { //Si responde que no
-                        System.out.println("");
-                        System.out.println("Esperamos verte pronto!");
+
+                    if (seguir.equals("no")) {
+                        System.out.println("\nHasta la proxima, esperamos verte pronto!");
                         jugando = false;
-                    } else if (seguir.equals("si")) { //Si responde que si
-                        System.out.println("");
-                        System.out.println("");
-                        System.out.println("");
-                        System.out.println("");
-                        System.out.println("");
-                        System.out.println("");
-                        System.out.println("--------------------------------------------------------------");
+                    } else if (seguir.equals("si")) {
+                        System.out.println("\nCargando el proximo nivel...");
+                        System.out.println("------------------------------------------");
                         Random random = new Random();
-                        if (nivelActual.izquierda != null && nivelActual.derecha != null) { //Si tiene los dos niveles disponibles, eligé de manera aleatoria el proximo
+                        if (nivelActual.izquierda != null && nivelActual.derecha != null) { // Si tiene los dos niveles disponibles, elige de manera aleatoria
                             if (random.nextBoolean()) {
                                 nivelActual = nivelActual.izquierda;
                             } else {
                                 nivelActual = nivelActual.derecha;
                             }
-                        } //Si solo uno de los dos niveles está disponible, elegirá el disponible
-                        else if (nivelActual.izquierda == null) {
+                        } else if (nivelActual.izquierda == null) {
                             nivelActual = nivelActual.derecha;
                         } else if (nivelActual.derecha == null) {
                             nivelActual = nivelActual.izquierda;
                         }
                     }
-                } else {// Si no tiene mas niveles
-                    System.out.println("");
-                    System.out.println("Ya no hay mas niveles, has ganado.");
+                } else { // Si no tiene mas niveles
+                    System.out.println("\nFelicidades! Has completado todos los niveles.");
                     jugando = false;
                 }
 
-            } else { //Si la respuesta es incorrecta
-
-                System.out.println("");
-                System.out.println("Respuesta incorrecta, repetirás el nivel, buena suerte en el proximo intento.");
-                try {
-                    // Retrasa el programa por 5 segundos
-                    Thread.sleep(5000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                System.out.println("----------------------------------------------------------------");
-
+            } else { // Si la respuesta es incorrecta
+                System.out.println("\nRespuesta incorrecta. Volveras a intentar el nivel.");
+                System.out.println("Preparate para el proximo intento...");
+                Thread.sleep(3000); // Pausa de 3 segundos para dar tiempo al jugador
+                System.out.println("------------------------------------------");
             }
         }
+
+        System.out.println("\n================= Fin del Juego =================");
     }
 
     public void agregarNodo(String nombre, String descripcion, String acertijo, String respuesta, int dificultad, Nodo nodo) { //Ese Nodo nodo es de donde va a partir para agregar
