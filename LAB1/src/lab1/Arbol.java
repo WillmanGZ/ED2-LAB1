@@ -66,19 +66,37 @@ public class Arbol {
                         System.out.println("\nHasta la proxima, esperamos verte pronto!");
                         jugando = false;
                     } else if (seguir.equals("si")) {
-                        System.out.println("\nCargando el proximo nivel...");
-                        System.out.println("------------------------------------------");
-                        Random random = new Random();
-                        if (nivelActual.izquierda != null && nivelActual.derecha != null) { // Si tiene los dos niveles disponibles, elige de manera aleatoria
-                            if (random.nextBoolean()) {
+                        if (!(nivelActual.izquierda == null) && !(nivelActual.derecha == null)) {
+                            System.out.println("");
+                            System.out.println("Escribe 'izquierda' o 'derecha' para ir a tu proximo nivel");
+                            String lado = sc.next().toLowerCase();
+                            while (!lado.equals("izquierda") && !lado.equals("derecha")) {
+                                System.out.println("\nRespuesta invalida.");
+                                System.out.println("Escribe 'izquierda' o 'derecha' para ir a tu proximo nivel");
+                                System.out.print("Digite su respuesta: ");
+                                lado = sc.next().toLowerCase();
+                            }
+
+                            if (lado.equals("izquierda")) {
                                 nivelActual = nivelActual.izquierda;
                             } else {
                                 nivelActual = nivelActual.derecha;
                             }
-                        } else if (nivelActual.izquierda == null) {
-                            nivelActual = nivelActual.derecha;
-                        } else if (nivelActual.derecha == null) {
+                            System.out.println("\nCargando el proximo nivel...");
+                            System.out.println("------------------------------------------");
+
+                        } else if (nivelActual.izquierda != null && nivelActual.derecha == null) { //Si solo tiene hijo izquierdo
+                            System.out.println("");
+                            System.out.println("\nYa que no hay un nivel derecho, cargaremos el izquierdo.");
+                            System.out.println("\nCargando el proximo nivel...");
+                            System.out.println("------------------------------------------");
                             nivelActual = nivelActual.izquierda;
+                        } else if (nivelActual.izquierda == null && nivelActual.derecha != null) {
+                            System.out.println("");
+                            System.out.println("\nYa que no hay un nivel izquierdo, cargaremos el derecho.");
+                            System.out.println("\nCargando el proximo nivel...");
+                            System.out.println("------------------------------------------");
+                            nivelActual = nivelActual.derecha;
                         }
                     }
                 } else { // Si no tiene mas niveles
